@@ -4,7 +4,7 @@
   "description": "Web dashboard built on electron and pynetworktables2js for frc robots",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron main.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,16 @@
   "bugs": {
     "url": "https://github.com/trevor-jones/frc-dashboard-955/issues"
   },
-  "homepage": "https://github.com/trevor-jones/frc-dashboard-955#readme"
+  "homepage": "https://github.com/trevor-jones/frc-dashboard-955#readme",
+  "devDependencies": {
+    "electron": "^1.6.11",
+    "electron-builder": "^19.16.0"
+  },
+  "dependencies": {
+    "wpilib-nt-client": "^1.2.6"
+  },
+  "build": {
+    "appId": "FRC-Dashboard-955",
+    "productName": "FRC-Dashboard-955"
+  }
 }
