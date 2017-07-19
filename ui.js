@@ -84,10 +84,11 @@ function onValueChanged(key, value, isNew) {
 			for (i = 0; i < value.length; i++) {
 				var option = document.createElement('option');
 				option.innerHTML = value[i];
+				option.style.background = "#444444"
 				ui.autoSelect.appendChild(option);
 			}
 			// Set value to the already-selected mode. If there is none, nothing will happen.
-			ui.autoSelect.value = NetworkTables.getValue('/SmartDashboard/currentlySelectedMode');
+			ui.autoSelect.value = NetworkTables.getValue('/SmartDashboard/autonomous/selected');
 			break;
 		case '/SmartDashboard/autonomous/selected':
 			ui.autoSelect.value = value;
@@ -157,15 +158,6 @@ function onValueChanged(key, value, isNew) {
 		}
 	}
 }
-
-// Open tuning section when button is clicked
-ui.tuning.button.onclick = function() {
-	if (ui.tuning.list.style.display === 'none') {
-		ui.tuning.list.style.display = 'block';
-	} else {
-		ui.tuning.list.style.display = 'none';
-	}
-};
 
 // Manages get and set buttons at the top of the tuning pane
 ui.tuning.set.onclick = function() {
