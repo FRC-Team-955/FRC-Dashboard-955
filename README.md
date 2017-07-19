@@ -12,14 +12,13 @@ Dashboard for viewing robot data and configuration while running built on electr
 
 If you're going to be using the preferred method of using the dashboard (as an application), you'll also need:
 * [`nodejs`](https://nodejs.com) & [`npm`](https://npmjs.com)
-    * If you don't have permission to install these, see [this gist](https://gist.github.com/isaacs/579814) for a workaround.
 * Electron (to install, `cd` into dashboard directory and run `npm install`)
 
 ### Configuration
 
 * In `ui.js`, there's a large `switch` statement in the `onValueChanged()` function which controls the updating of control elements in the dashboard. Example NetworkTables key names are used, but you'll need to change them to match those used in your team's robot code for them to affect anything on your robot.
 
-You also need to set up the address of the network tables server you are connecting to, which is usually the robot. In the `main.js` file, change the address from `localhost` after the `--robot` argument when starting the python server to the address you want to use. It will usually be `roborio-XXXX-frc.local` where XXXX is you're team number, such as `roborio-955-frc.local`
+* You also need to set up the address of the network tables server you are connecting to, which is usually the robot. In the `main.js` file, change the address from `localhost` after the `--robot` argument when starting the python server to the address you want to use. It will usually be `roborio-XXXX-frc.local` where XXXX is you're team number, such as `roborio-955-frc.local`
 
 ### Testing
 
