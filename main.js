@@ -1,62 +1,96 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-const Menu = electron.Menu
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+'use strict';
 
-const path = require('path')
-const url = require('url')
+const electron = require('electron');
+// Module to control application life.
+const app = electron.app;
+// Module to create native browser window.
+const BrowserWindow = electron.BrowserWindow;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
 
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
-  Menu.setApplicationMenu(null)
+// Define global reference to the python server (which we'll start next).
+let server;
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+function createWindow() {
+    // Start python server.
+    if (process.platform === 'win32') {
+        // If on Windows, use the batch command (py -3 ./server.py).
+        server = require('child_process').spawn('py', ['-3', '-m', 'pynetworktables2js', '--robot', 'localhost']);
+    } else {
+        // If on unix-like/other OSes, use bash command (python3 ./server.py).
+        server = require('child_process').spawn('python3', ['-m', 'pynetworktables2js']);
+    }
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
+		width: 1366,
+		height: 570,
+		// 1366x570 is a good standard height, but you may want to change this to fit your DriverStation computer's screen better.
+		// It's best if the dashboard takes up as much space as possible without covering the DriverStation application.
+		// The window is closed until the python server is ready
+		show: false
+	});
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
+	// Move window to top (left) of screen.
+	mainWindow.setPosition(0, 0);
+	
+
+	// Load window.
+	mainWindow.loadURL('http://localhost:8888');
+
+	// Once the python server is ready, load window contents.
+	mainWindow.once('ready-to-show', function() {
+		mainWindow.loadURL('http://localhost:8888');
+		mainWindow.once('ready-to-show', function() {
+			// Once it has reloaded, show the window
+			mainWindow.show();
+		});
+	});
+
+    // Remove menu
+    mainWindow.setMenu(null);
+    mainWindow.webContents.openDevTools()
+
+	// Emitted when the window is closed.
+	mainWindow.on('closed', function() {
+		// Dereference the window object, usually you would store windows
+		// in an array if your app supports multi windows, this is the time
+		// when you should delete the corresponding element.
+		mainWindow = null;
+	});
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+app.on('window-all-closed', function() {
+	// On OS X it is common for applications and their menu bar
+	// to stay active until the user quits explicitly with Cmd + Q.
+    // For FRCDB, though? Screw the standard.
+    // That standard sucks for this application.
+    // So we're going to kill the application regardless.
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
+    // If you want to restore the standard behavior, uncomment the next line.
+    // if (process.platform !== 'darwin')
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+    app.quit();
+});
+
+app.on('quit', function() {
+    console.log('Application quit. Killing tornado server.');
+
+    // Kill tornado server child process.
+    server.kill('SIGINT');
+});
+
+app.on('activate', function() {
+	// On OS X it's common to re-create a window in the app when the
+	// dock icon is clicked and there are no other windows open.
+	if (mainWindow === null) {
+		createWindow();
+	}
+});

@@ -20,9 +20,7 @@
     "electron": "^1.6.11",
     "electron-builder": "^19.16.0"
   },
-  "dependencies": {
-    "wpilib-nt-client": "^1.2.6"
-  },
+  "dependencies": {},
   "build": {
     "appId": "FRC-Dashboard-955",
     "productName": "FRC-Dashboard-955"

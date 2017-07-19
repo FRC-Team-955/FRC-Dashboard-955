@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <meta charset="utf-8">
+    <title>Team 955 Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
   </head>
+  
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-  </body>
+    <!-- Clock that shows up in top left -->
+    <div id="timer">2:15</div>
+    <header>
+        <!-- Tells whether robot is connected to dashboard. -->
+        <div id="robot-state">Unknown state</div>
+        <button id="tuning-button">Tuning</button>
+    </header>
+		<div id="tuning" style="display: none;">
+			<input type="text" placeholder="Property" id="name">
+			<input type="text" placeholder="Value" id="value">
+			<button id="set">Set</button>
+			<button id="get">Get</button>
+		</div>
+    <!-- The main body of the dashboard, by default contains the gyro monitor and the robot diagram -->
+    <article>
+        
+    </article>
+    <!-- The sidebar of the dashboard. Designed for smaller control elements like selection boxes and small buttons. -->
+    <aside>
+        <!-- Autonomous selector -->
+        <div class="select-container">
+            <select id="auto-select">
+                <option>No auto modes found</option>
+                <!-- This gets populated by JS -->
+            </select>
+        </div>
+    </aside>
+    <script src="/networktables/networktables.js"></script>
+    <script src="ui.js"></script>
+</body>
+  
 </html>
