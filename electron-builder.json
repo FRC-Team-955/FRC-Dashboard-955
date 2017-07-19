@@ -1,0 +1,8 @@
+{
+	"extraFiles": [
+	  "index.html",
+	  "css/**/*",
+	  "ui.js"
+	],
+	"publish": null
+}

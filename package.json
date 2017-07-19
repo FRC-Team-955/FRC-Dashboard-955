@@ -1,16 +1,24 @@
 {
   "name": "frc-dashboard-955",
   "version": "0.0.0",
+  "author": "Trevor Jones",
   "description": "Web dashboard built on electron and pynetworktables2js for frc robots",
   "main": "main.js",
+  "build": {
+    "appId": "com.frc955.dashboard",
+	"files": [
+	  "node_modules/**/*",
+	  "package.json"
+	],
+	"extraFiles": [
+	  "index.html"
+	],
+    "publish": null
+  },
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "release": "build -c electron-builder.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/trevor-jones/frc-dashboard-955.git"
-  },
-  "author": "Trevor Jones",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/trevor-jones/frc-dashboard-955/issues"
